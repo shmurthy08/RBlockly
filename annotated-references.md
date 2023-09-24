@@ -1,0 +1,3 @@
+1. [Blockly Documentation](https://developers.google.com/blockly): This weblink is used for the documentation of Blockly. It is used to understand the different blocks and their functionalities.
+
+2. [rpy2 Documentation](https://rpy2.github.io/): This weblink is used for rpy2 documentation. rpy2 is a Python library that allows Python to interact with R. It is used to understand how to use rpy2 to execute R code in Python. One avenue of thought is having a JS frontend and Python backend, using rpy2, to take in user inputs on the frontend and execute R code on the backend.
