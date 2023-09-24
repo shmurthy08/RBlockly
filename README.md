@@ -9,6 +9,8 @@
 
 ## Project: Rblockly - Creating Blockly Blocks for R Functions
 
+## Link to Project - https://shmurthy08.github.io/RBlockly/src/design-blocks/index.html 
+
 ### Motivation
 
 The R programming language is a powerful tool for data analysis, statistical modeling, and data visualization. However, it can be intimidating for beginners due to its syntax and steep learning curve. This project, Rblockly, aims to make R more accessible and user-friendly, especially for those who are new to programming.
