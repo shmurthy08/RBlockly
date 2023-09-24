@@ -6,6 +6,17 @@
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <!-- CSS -->
     <style>
+        /* Reduce the width and height of blocks */
+        .blocklyBlock {
+            width: 20px;
+            height: 10px;
+        }
+
+        /* Adjust text size and padding */
+        .blocklyText {
+            font-size: 12px;
+            padding: 3px;
+        }
         #rCodeDisplay {
             white-space: pre-line;
             padding-top: 0; /* Reset padding */
@@ -21,11 +32,11 @@
 <body>
     <div style="display: flex; height: 100vh;">
         <!-- Left half (75% of screen width): Blockly workspace -->
-        <div id="blocklyDiv" style="flex: 3; height: 100%;"></div>
+        <div id="blocklyDiv" class="custom-blockly" style="flex: 3; height: 50%;"></div>
 
         <!-- Right half (25% of screen width): Display R code -->
         <div id="rCodeDisplay" style="flex: 1; height: 100%; overflow: auto; padding: 10px;"></div>
-    </div>
+    </div>     
     
     <script>
         var workspace;
@@ -133,7 +144,7 @@
                     "inputsInline": false, // Disallow inline connections
                     "previousStatement": null, // No previous connections
                     "nextStatement": "Number", // Allow connections to the right
-                    "colour": 210,
+                    "colour": 90,
                     "tooltip": "Add a number",
                     "helpUrl": ""
                 }
@@ -160,7 +171,7 @@
                     "inputsInline": true,
                     "previousStatement": null,
                     "nextStatement": null,
-                    "colour": 210,
+                    "colour": 270,
                     "tooltip": "Initialize a variable in R",
                     "helpUrl": ""
                 }
@@ -214,7 +225,7 @@
                     "output": "Number",
                     "previousStatement": null,
                     "nextStatement": null,
-                    "colour": 210,
+                    "colour": 180,
                     "tooltip": "Calculate the mean of a list in R",
                     "helpUrl": ""
                 }
@@ -241,7 +252,7 @@
                     "output": "Number",
                     "previousStatement": null,
                     "nextStatement": null,
-                    "colour": 210,
+                    "colour": 180,
                     "tooltip": "Calculate the median of a list in R",
                     "helpUrl": ""
                 }
@@ -268,7 +279,7 @@
                     "output": "Number",
                     "previousStatement": null,
                     "nextStatement": null,
-                    "colour": 210,
+                    "colour": 180,
                     "tooltip": "Calculate the mode of a list in R",
                     "helpUrl": ""
                 }
@@ -295,7 +306,7 @@
                     "output": "Number",
                     "previousStatement": null,
                     "nextStatement": null,
-                    "colour": 210,
+                    "colour": 180,
                     "tooltip": "Calculate range of a list in R",
                     "helpUrl": ""
                 }
