@@ -4,6 +4,7 @@
     <title>RBlock</title>
     <!-- Load Blockly -->
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+    <script src="customs_blocks.js"></script>
     <!-- CSS -->
     <style>
         /* Reduce the width and height of blocks */
@@ -27,104 +28,38 @@
             margin-top: 0.2em; /* Adjust margin as needed to separate code lines */
             padding-top: 0; /* Reset padding */
         }
+
+        /* Style for buttons */
+        .action-button {
+            position: absolute;
+            bottom: 20px;
+        }
+
+        /* Adjust Blockly workspace width */
+        .custom-blockly {
+            flex: 3;
+            width: 60%; /* Set the workspace width to 75% of the screen */
+            height: 90%; /* Adjusted height to fill most of the right half */
+        }
     </style>
 </head>
 <body>
     <div style="display: flex; height: 100vh;">
         <!-- Left half (75% of screen width): Blockly workspace -->
-        <div id="blocklyDiv" class="custom-blockly" style="flex: 3; height: 50%;"></div>
+        <div id="blocklyDiv" class="custom-blockly" style="flex: 3;"></div>
 
         <!-- Right half (25% of screen width): Display R code -->
-        <div id="rCodeDisplay" style="flex: 1; height: 100%; overflow: auto; padding: 10px;"></div>
+        <div id="rCodeDisplay" style="flex: 1; height: 90%; overflow: auto; padding: 10px; display: none;"></div>
     </div>     
-    
+
+    <!-- "Generate R" button outside of Blockly workspace -->
+    <button type="button" onclick="updateRCode()" class="action-button" style="left: 9px;">Generate R</button>
+    <!-- "Download" button placed outside of Blockly workspace -->
+    <button type="button" onclick="download()" class="action-button" style="left: 97px;">Download</button>
+
     <script>
         var workspace;
-
-        // Function to update the R code display
-        function updateRCode() {
-            var blocks = workspace.getTopBlocks(true);
-            var code = blocks.map(function(block) {
-                return Blockly.JavaScript.blockToCode(block);
-            }).join('\n');
-            
-            // Split code lines and wrap each line in a div with a class
-            var codeLines = code.split('\n').map(function(line) {
-                return '<div class="code-line">' + line + '</div>';
-            }).join('');
-
-            document.getElementById('rCodeDisplay').innerHTML = codeLines;
-        }
-
-        // Behavior of Empty Block
-        Blockly.JavaScript['empty_block'] = function (block) {
-          var varName = block.getFieldValue('NUM');          
-          var code = "empty_block_test <- "+varName;
-          
-          return code
-        };
-
-        // Behavior of Initializing a variable in R
-        Blockly.JavaScript['r_variable'] = function (block) {
-          var varName = block.getFieldValue('VAR_NAME');
-          var initialValue = block.getFieldValue('INITIAL_VALUE') || 'NULL';
-          
-          var code = varName + ' <- ' + initialValue;
-          
-          return code
-        };
-
-        // Behavior of initializing a list
-        Blockly.JavaScript['initialize_list'] = function (block) {
-            var listName = block.getFieldValue('LIST_NAME');
-            var numbers = block.getFieldValue('NUMBERS');
-
-            // Remove any extra whitespace and split the values by commas
-            var numbersList = numbers.replace(/\s/g, '').split(',');
-
-            // Join the values back together as a string
-            var numbersString = numbersList.join(', ');
-
-            var code = listName + ' <- c(' + numbersString + ')';
-            return code
-        };
-
-        // Behavior of calculation mean of a list
-        Blockly.JavaScript['calculate_mean'] = function (block) {
-            var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
-            var varName = block.getFieldValue('VAR_NAME');
-
-            var code = varName + ' <- ' + 'mean' + '(' + listName + ')';
-            
-            return code
-        };
-
-        // Behavior of calculating median of a list
-        Blockly.JavaScript['calculate_median'] = function (block) {
-            var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
-            var varName = block.getFieldValue('VAR_NAME');
-            var code = varName + ' <- ' + 'median' + '(' + listName + ')';
-            
-            return code
-        };
-
-        // Behavior of calculating mode of a list
-        Blockly.JavaScript['calculate_mode'] = function (block) {
-            var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
-            var varName = block.getFieldValue('VAR_NAME');
-            var code = varName + ' <- ' + 'as.numeric(names(sort(table(' + listName + '), decreasing = TRUE)[1]))';
-            
-            return code
-        };
-
-        // Behavior of calculating range of a list
-        Blockly.JavaScript['calculate_range'] = function (block) {
-            var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
-            var varName = block.getFieldValue('VAR_NAME');
-            var code = varName + ' <- ' + "max" + '(' + listName + ') - ' + 'min(' + listName + ')';
-            
-            return code
-        };
+        var rCodeVisible = false;
 
         // Wait for the Blockly library to load before creating the workspace
         document.addEventListener("DOMContentLoaded", function () {
@@ -143,7 +78,7 @@
                     "output": "Number",
                     "inputsInline": false, // Disallow inline connections
                     "previousStatement": null, // No previous connections
-                    "nextStatement": "Number", // Allow connections to the right
+                    "nextStatement": null, 
                     "colour": 90,
                     "tooltip": "Add a number",
                     "helpUrl": ""
@@ -280,8 +215,7 @@
                     "previousStatement": null,
                     "nextStatement": null,
                     "colour": 180,
-                    "tooltip": "Calculate the mode of a list in R",
-                    "helpUrl": ""
+                    "tooltip": "Calculate the mode of a list in R"
                 }
             ]);
 
@@ -307,8 +241,7 @@
                     "previousStatement": null,
                     "nextStatement": null,
                     "colour": 180,
-                    "tooltip": "Calculate range of a list in R",
-                    "helpUrl": ""
+                    "tooltip": "Calculate range of a list in R"
                 }
             ]);
 
@@ -316,15 +249,6 @@
             workspace = Blockly.inject('blocklyDiv', {
                 media: 'https://unpkg.com/blockly@5.1.0/media/',
                 toolbox: '<xml id="toolbox" style="display: none"><block type="empty_block"></block><block type="r_variable"></block><block type="initialize_list"></block><block type="calculate_mean"></block><block type="calculate_median"></block><block type="calculate_mode"></block><block type="calculate_range"></block></xml>'
-            });
-
-            // Update the R code display when a block is added, modified, or deleted in the workspace
-            workspace.addChangeListener(function(event) {
-                if (event.type == Blockly.Events.BLOCK_CREATE ||
-                    event.type == Blockly.Events.BLOCK_CHANGE ||
-                    event.type == Blockly.Events.BLOCK_DELETE) {
-                    updateRCode();
-                }
             });
         });
     </script>
