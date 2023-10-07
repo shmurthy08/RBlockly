@@ -9,7 +9,7 @@
 
 ## Project: Rblockly - Creating Blockly Blocks for R Functions
 
-## Link to Project - https://shmurthy08.github.io/RBlockly/src/design-blocks/index.html 
+## [Link to Github Page of Project](https://shmurthy08.github.io/RBlockly/src/design-blocks/index.html )
 
 ### Motivation
 
