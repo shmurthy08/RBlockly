@@ -6,42 +6,7 @@
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <script src="customs_blocks.js"></script>
     <!-- CSS -->
-    <style>
-        /* Reduce the width and height of blocks */
-        .blocklyBlock {
-            width: 20px;
-            height: 10px;
-        }
-
-        /* Adjust text size and padding */
-        .blocklyText {
-            font-size: 12px;
-            padding: 3px;
-        }
-        #rCodeDisplay {
-            white-space: pre-line;
-            padding-top: 0; /* Reset padding */
-            margin-top: -0.5em; /* Reset margin */
-        }
-
-        .code-line {
-            margin-top: 0.2em; /* Adjust margin as needed to separate code lines */
-            padding-top: 0; /* Reset padding */
-        }
-
-        /* Style for buttons */
-        .action-button {
-            position: absolute;
-            bottom: 20px;
-        }
-
-        /* Adjust Blockly workspace width */
-        .custom-blockly {
-            flex: 3;
-            width: 60%; /* Set the workspace width to 75% of the screen */
-            height: 90%; /* Adjusted height to fill most of the right half */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <div style="display: flex; height: 100vh;">
