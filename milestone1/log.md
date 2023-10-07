@@ -34,3 +34,7 @@ Tried finding online CDNs (Content Delivery Networks) to be able to run R code. 
 - [Milestone 1 files](https://github.com/shmurthy08/RBlockly/blob/main/milestone1)
 - Image of proposed run method:
 ![Proposed Method of Running R Code](https://cdn.discordapp.com/attachments/1031350086191566899/1159948201693024256/Math_350_Notes.jpg?ex=6532e0f2&is=65206bf2&hm=1d14fb809b437605630a1a67affb39c3f7c2f6fb78a1f31fffb0b832dbc3d364&)
+
+
+## Use of AI:
+Used ChatGPT (GPT-3.5) to understand HTML syntax and JS syntax.
