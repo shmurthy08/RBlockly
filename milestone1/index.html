@@ -13,7 +13,7 @@
     <div style="margin: 10px 0px 10px 5px">
         <a href="https://github.com/shmurthy08/RBlockly" target="_blank"><img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='13'> View Source Code on GitHub</a>
     </div>
-    <div style="display: flex; height: 100vh;">
+    <div style="display: flex; height: 95vh;">
         <!-- Left half (75% of screen width): Blockly workspace -->
         <div id="blocklyDiv" class="custom-blockly" style="flex: 3;"></div>
 
@@ -112,7 +112,7 @@
             Blockly.defineBlocksWithJsonArray([
                 {
                     "type": "calculate_mean",
-                    "message0": "Mean %1 of %2 list",
+                    "message0": "Mean %1 of %2",
                     "args0": [
                         {
                             "type": "field_input",
@@ -120,7 +120,7 @@
                             "text": "var_name"
                         },
                         {
-                            "type": "input_value",
+                            "type": "input_statement",
                             "name": "LIST_NAME",
                             "text": "list",
                             "check": "Array" 
@@ -139,7 +139,7 @@
             Blockly.defineBlocksWithJsonArray([
                 {
                     "type": "calculate_median",
-                    "message0": "Median %1 of %2 list",
+                    "message0": "Median %1 of %2",
                     "args0": [
                         {
                             "type": "field_input",
@@ -147,7 +147,7 @@
                             "text": "var_name"
                         },
                         {
-                            "type": "input_value",
+                            "type": "input_statement",
                             "name": "LIST_NAME",
                             "text": "list",
                             "check": "Array" 
@@ -166,7 +166,7 @@
             Blockly.defineBlocksWithJsonArray([
                 {
                     "type": "calculate_mode",
-                    "message0": "Mode %1 of %2 list",
+                    "message0": "Mode %1 of %2",
                     "args0": [
                         {
                             "type": "field_input",
@@ -174,7 +174,7 @@
                             "text": "var_name"
                         },
                         {
-                            "type": "input_value",
+                            "type": "input_statement",
                             "name": "LIST_NAME",
                             "text": "list",
                             "check": "Array" 
@@ -192,7 +192,7 @@
             Blockly.defineBlocksWithJsonArray([
                 {
                     "type": "calculate_range",
-                    "message0": "Range %1 of %2 list",
+                    "message0": "Range %1 of %2",
                     "args0": [
                         {
                             "type": "field_input",
@@ -200,7 +200,7 @@
                             "text": "var_name"
                         },
                         {
-                            "type": "input_value",
+                            "type": "input_statement",
                             "name": "LIST_NAME",
                             "text": "list",
                             "check": "Array" 
