@@ -1,5 +1,3 @@
-// MILESTONE 1 FILE
-
 // Function to update the R code display
 function updateRCode() {
     var rCodeDisplay = document.getElementById('rCodeDisplay');
