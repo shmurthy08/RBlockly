@@ -56,7 +56,7 @@ This block finds the mode (most frequent value) of a list of numbers.
 ### Semantics
 When this block is executed, it will generate an RBlockly to determine the mode of a specified list, like this:
 ```R
-mode_value <- as.numeric(names(sort(table(my_list), decreasing = TRUE)[1]))
+mode_value <- as.numeric(names(table(LIST)[table(LIST) == max(table(LIST))]))
 ```
 Where `mode_value` is the variable that will store the mode, and `my_list` is the list provided by the user.
 
