@@ -45,71 +45,136 @@ function download() {
 }
 
 // Behavior of Empty Block
-Blockly.JavaScript['empty_block'] = function (block) {
-    var varName = block.getFieldValue('NUM');          
-    var code = "empty_block_test <- " + varName;
+// Blockly.JavaScript['empty_block'] = function (block) {
+//     var varName = block.getFieldValue('NUM');          
+//     var code = "empty_block_test <- " + varName;
     
-    return code
-  };
+//     return code
+//   };
 
 // Behavior of Initializing a variable in R
 Blockly.JavaScript['r_variable'] = function (block) {
-var varName = block.getFieldValue('VAR_NAME');
-var initialValue = block.getFieldValue('INITIAL_VALUE') || 'NULL';
+    var varName = block.getFieldValue('VAR_NAME');
+    var initialValue = block.getFieldValue('INITIAL_VALUE') || 'NULL';
 
-var code = varName + ' <- ' + initialValue;
+    var code = varName + ' <- ' + initialValue;
 
-return code
+    return code
 };
 
 // Behavior of initializing a list
 Blockly.JavaScript['initialize_list'] = function (block) {
-    var listName = block.getFieldValue('LIST_NAME');
-    var numbers = block.getFieldValue('NUMBERS');
+        var listName = block.getFieldValue('LIST_NAME');
+        var numbers = block.getFieldValue('NUMBERS');
 
-    // Remove any extra whitespace and split the values by commas
-    var numbersList = numbers.replace(/\s/g, '').split(',');
+        // Check if the block is the outer block
+        if (block.getParent() == null) {
+            var numbersList = numbers.replace(/\s/g, '').split(',');
+            var numbersString = numbersList.join(', ');
 
-    // Join the values back together as a string
-    var numbersString = numbersList.join(', ');
+            var code = listName + ' <- c(' + numbersString + ')\n';
+            console.log('Initialize list code:', code); // Add this line for debugging
+            return code;
+        }
 
-    var code = listName + ' <- c(' + numbersString + ')';
-    return code
+        return '';
 };
 
-// Behavior of calculation mean of a list
+// Behavior of calculating mean
 Blockly.JavaScript['calculate_mean'] = function (block) {
-    var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
     var varName = block.getFieldValue('VAR_NAME');
-
-    var code = varName + ' <- ' + 'mean' + '(' + listName + ')';
+    var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
     
-    return code
+    // Check if the block is the outer block and the list block is the parent
+    if (block.getParent() == null && block.getInput('LIST_NAME').connection.targetConnection != null) {
+        // Check if the input is an "initialize_list" block
+        var inputBlock = block.getInputTargetBlock('LIST_NAME');
+        if (inputBlock != null && inputBlock.type === 'initialize_list') {
+            var numbers = inputBlock.getFieldValue('NUMBERS');
+            var numbersList = numbers.replace(/\s/g, '').split(',');
+            var numbersString = numbersList.join(', ');
+            
+            var code = varName + ' <- ' + 'mean' + '(c(' + numbersString + '))\n';
+            console.log('Calculate mean code:', code); // Add this line for debugging
+            return code;
+        }
+    }
+    
+    // This is a nested block or the list block is not connected, so return an empty string
+    return '';
 };
 
-// Behavior of calculating median of a list
 Blockly.JavaScript['calculate_median'] = function (block) {
-    var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
-    var varName = block.getFieldValue('VAR_NAME');
-    var code = varName + ' <- ' + 'median' + '(' + listName + ')';
-    
-    return code
+    try {
+        var varName = block.getFieldValue('VAR_NAME');
+        var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
+
+        if (block.getParent() == null && block.getInput('LIST_NAME').connection.targetConnection != null) {
+            var inputBlock = block.getInputTargetBlock('LIST_NAME');
+            if (inputBlock != null && inputBlock.type === 'initialize_list') {
+                var numbers = inputBlock.getFieldValue('NUMBERS');
+                var numbersList = numbers.replace(/\s/g, '').split(',');
+                var numbersString = numbersList.join(', ');
+
+                var code = varName + ' <- ' + 'median' + '(c(' + numbersString + '))\n';
+                console.log('Calculate median code:', code);
+                return code;
+            }
+        }
+
+        return '';
+    } catch (error) {
+        console.error('Error in calculate_median block:', error);
+        return '';
+    }
 };
 
-// Behavior of calculating mode of a list
 Blockly.JavaScript['calculate_mode'] = function (block) {
-    var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
-    var varName = block.getFieldValue('VAR_NAME');
-    var code = varName + ' <- ' + 'as.numeric(names(sort(table(' + listName + '), decreasing = TRUE)[1]))';
-    
-    return code
+    try {
+        var varName = block.getFieldValue('VAR_NAME');
+        var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
+
+        if (block.getParent() == null && block.getInput('LIST_NAME').connection.targetConnection != null) {
+            var inputBlock = block.getInputTargetBlock('LIST_NAME');
+            if (inputBlock != null && inputBlock.type === 'initialize_list') {
+                var numbers = inputBlock.getFieldValue('NUMBERS');
+                var numbersList = numbers.replace(/\s/g, '').split(',');
+                var numbersString = numbersList.join(', ');
+
+                var code = varName + ' <- ' + 'as.numeric(names(table(c(' + numbersString + '))[table(c(' + numbersString + ')) == max(table(c(' + numbersString + ')))]))' + '\n';
+                console.log('Calculate mode code:', code);
+                return code;
+            }
+        }
+
+        return '';
+    } catch (error) {
+        console.error('Error in calculate_mode block:', error);
+        return '';
+    }
 };
 
-// Behavior of calculating range of a list
 Blockly.JavaScript['calculate_range'] = function (block) {
-    var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
-    var varName = block.getFieldValue('VAR_NAME');
-    var code = varName + ' <- ' + "max" + '(' + listName + ') - ' + 'min(' + listName + ')';
-    
-    return code
+    try {
+        var varName = block.getFieldValue('VAR_NAME');
+        var listName = Blockly.JavaScript.valueToCode(block, 'LIST_NAME', Blockly.JavaScript.ORDER_ATOMIC);
+
+        if (block.getParent() == null && block.getInput('LIST_NAME').connection.targetConnection != null) {
+            var inputBlock = block.getInputTargetBlock('LIST_NAME');
+            if (inputBlock != null && inputBlock.type === 'initialize_list') {
+                var numbers = inputBlock.getFieldValue('NUMBERS');
+                var numbersList = numbers.replace(/\s/g, '').split(',');
+                var numbersString = numbersList.join(', ');
+
+                var code = varName + ' <- ' + 'max' + '(c(' + numbersString + ')) - ' + 'min(c(' + numbersString + '))\n';
+                console.log('Calculate range code:', code);
+                return code;
+            }
+        }
+
+        return '';
+    } catch (error) {
+        console.error('Error in calculate_range block:', error);
+        return '';
+    }
 };
