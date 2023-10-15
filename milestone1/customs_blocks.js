@@ -45,21 +45,21 @@ function download() {
 }
 
 // Behavior of Empty Block
-Blockly.JavaScript['empty_block'] = function (block) {
-    var varName = block.getFieldValue('NUM');          
-    var code = "empty_block_test <- " + varName;
+// Blockly.JavaScript['empty_block'] = function (block) {
+//     var varName = block.getFieldValue('NUM');          
+//     var code = "empty_block_test <- " + varName;
     
-    return code
-  };
+//     return code
+//   };
 
 // Behavior of Initializing a variable in R
 Blockly.JavaScript['r_variable'] = function (block) {
-var varName = block.getFieldValue('VAR_NAME');
-var initialValue = block.getFieldValue('INITIAL_VALUE') || 'NULL';
+    var varName = block.getFieldValue('VAR_NAME');
+    var initialValue = block.getFieldValue('INITIAL_VALUE') || 'NULL';
 
-var code = varName + ' <- ' + initialValue;
+    var code = varName + ' <- ' + initialValue;
 
-return code
+    return code
 };
 
 // Behavior of initializing a list
@@ -72,13 +72,12 @@ Blockly.JavaScript['initialize_list'] = function (block) {
             var numbersList = numbers.replace(/\s/g, '').split(',');
             var numbersString = numbersList.join(', ');
 
-            var code = listName + ' <- c(' + numbersString + ')';
+            var code = listName + ' <- c(' + numbersString + ')\n';
             console.log('Initialize list code:', code); // Add this line for debugging
             return code;
-        } else {
-            // This is a nested block, so return an empty string
-            return '';
         }
+
+        return '';
 };
 
 // Behavior of calculating mean
@@ -95,7 +94,7 @@ Blockly.JavaScript['calculate_mean'] = function (block) {
             var numbersList = numbers.replace(/\s/g, '').split(',');
             var numbersString = numbersList.join(', ');
             
-            var code = varName + ' <- ' + 'mean' + '(' + numbersString + ')';
+            var code = varName + ' <- ' + 'mean' + '(c(' + numbersString + '))\n';
             console.log('Calculate mean code:', code); // Add this line for debugging
             return code;
         }
@@ -117,7 +116,7 @@ Blockly.JavaScript['calculate_median'] = function (block) {
                 var numbersList = numbers.replace(/\s/g, '').split(',');
                 var numbersString = numbersList.join(', ');
 
-                var code = varName + ' <- ' + 'median' + '(' + numbersString + ')';
+                var code = varName + ' <- ' + 'median' + '(c(' + numbersString + '))\n';
                 console.log('Calculate median code:', code);
                 return code;
             }
@@ -142,7 +141,7 @@ Blockly.JavaScript['calculate_mode'] = function (block) {
                 var numbersList = numbers.replace(/\s/g, '').split(',');
                 var numbersString = numbersList.join(', ');
 
-                var code = varName + ' <- ' + 'as.numeric(names(sort(table(' + numbersString + '), decreasing = TRUE)[1]))';
+                var code = varName + ' <- ' + 'as.numeric(names(table(c(' + numbersString + '))[table(c(' + numbersString + ')) == max(table(c(' + numbersString + ')))]))' + '\n';
                 console.log('Calculate mode code:', code);
                 return code;
             }
@@ -167,7 +166,7 @@ Blockly.JavaScript['calculate_range'] = function (block) {
                 var numbersList = numbers.replace(/\s/g, '').split(',');
                 var numbersString = numbersList.join(', ');
 
-                var code = varName + ' <- ' + 'max' + '(' + numbersString + ') - ' + 'min(' + numbersString + ')';
+                var code = varName + ' <- ' + 'max' + '(c(' + numbersString + ')) - ' + 'min(c(' + numbersString + '))\n';
                 console.log('Calculate range code:', code);
                 return code;
             }

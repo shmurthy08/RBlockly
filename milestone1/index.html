@@ -33,26 +33,26 @@
         // Wait for the Blockly library to load before creating the workspace
         document.addEventListener("DOMContentLoaded", function () {
             // Empty block definition
-            Blockly.defineBlocksWithJsonArray([
-                {
-                    "type": "empty_block",
-                    "message0": "%1",
-                    "args0": [
-                    {
-                        "type": "field_number",
-                        "name": "NUM",
-                        "value": 0
-                    }
-                    ],
-                    "output": "Number",
-                    "inputsInline": false, // Disallow inline connections
-                    "previousStatement": null, // No previous connections
-                    "nextStatement": null, 
-                    "colour": 90,
-                    "tooltip": "Add a number",
-                    "helpUrl": ""
-                }
-            ]);
+            // Blockly.defineBlocksWithJsonArray([
+            //     {
+            //         "type": "empty_block",
+            //         "message0": "%1",
+            //         "args0": [
+            //         {
+            //             "type": "field_number",
+            //             "name": "NUM",
+            //             "value": 0
+            //         }
+            //         ],
+            //         "output": "Number",
+            //         "inputsInline": false, // Disallow inline connections
+            //         "previousStatement": null, // No previous connections
+            //         "nextStatement": null, 
+            //         "colour": 90,
+            //         "tooltip": "Add a number",
+            //         "helpUrl": ""
+            //     }
+            // ]);
 
             // Initialize block definition
             Blockly.defineBlocksWithJsonArray([
@@ -74,7 +74,7 @@
                     "output": "Variable",
                     "inputsInline": true,
                     "previousStatement": null,
-                    "nextStatement": null,
+                    // "nextStatement": null,
                     "colour": 270,
                     "tooltip": "Initialize a variable in R",
                     "helpUrl": ""
@@ -101,7 +101,7 @@
                     "output": "Array",
                     "inputsInline": true,
                     "previousStatement": null,
-                    "nextStatement": null,
+                    // "nextStatement": null,
                     "colour": 210,
                     "tooltip": "Initialize a list in R",
                     "helpUrl": ""
@@ -127,8 +127,8 @@
                         }
                     ],
                     "output": "Number",
-                    "previousStatement": null,
-                    "nextStatement": null,
+                    // "previousStatement": null,
+                    // "nextStatement": null,
                     "colour": 180,
                     "tooltip": "Calculate the mean of a list in R",
                     "helpUrl": ""
@@ -154,8 +154,8 @@
                         }
                     ],
                     "output": "Number",
-                    "previousStatement": null,
-                    "nextStatement": null,
+                    // "previousStatement": null,
+                    // "nextStatement": null,
                     "colour": 180,
                     "tooltip": "Calculate the median of a list in R",
                     "helpUrl": ""
@@ -181,8 +181,8 @@
                         }
                     ],
                     "output": "Number",
-                    "previousStatement": null,
-                    "nextStatement": null,
+                    // "previousStatement": null,
+                    // "nextStatement": null,
                     "colour": 180,
                     "tooltip": "Calculate the mode of a list in R"
                 }
@@ -207,8 +207,8 @@
                         }
                     ],
                     "output": "Number",
-                    "previousStatement": null,
-                    "nextStatement": null,
+                    // "previousStatement": null,
+                    // "nextStatement": null,
                     "colour": 180,
                     "tooltip": "Calculate range of a list in R"
                 }
@@ -217,7 +217,7 @@
             // Create blockly workspace
             workspace = Blockly.inject('blocklyDiv', {
                 media: 'https://unpkg.com/blockly@5.1.0/media/',
-                toolbox: '<xml id="toolbox" style="display: none"><block type="empty_block"></block><block type="r_variable"></block><block type="initialize_list"></block><block type="calculate_mean"></block><block type="calculate_median"></block><block type="calculate_mode"></block><block type="calculate_range"></block></xml>'
+                toolbox: '<xml id="toolbox" style="display: none"></block><block type="r_variable"></block><block type="initialize_list"></block><block type="calculate_mean"></block><block type="calculate_median"></block><block type="calculate_mode"></block><block type="calculate_range"></block></xml>'
             });
         });
     </script>
