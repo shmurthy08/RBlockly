@@ -1,225 +1,274 @@
-<!-- MILESTONE 1 FILE -->
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>RBlock</title>
-    <!-- Load Blockly -->
+    <title>RBlockly</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn.discordapp.com/attachments/1031350086191566899/1168350696773525616/RBlockly-Logo.png" />
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <script src="customs_blocks.js"></script>
-    <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-    <div style="margin: 10px 0px 10px 5px">
-        <a href="https://github.com/shmurthy08/RBlockly" target="_blank"><img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='13'> View Source Code on GitHub</a>
+<body>
+  <div class="container">
+    <div class="left">
+        <div style="margin-right: 10px; margin-top: 3px">
+            <a href="https://github.com/shmurthy08/RBlockly" target="_blank"><button class="button"><img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='14'>&nbsp;&nbsp; View Source Code on GitHub</button></a>
+        </div>
+        <div style="display: flex; height: 93vh;">
+            <div id="blocklyDiv" class="custom-blockly" style="flex: 3;"></div>
+        </div>
     </div>
-    <div style="display: flex; height: 95vh;">
-        <!-- Left half (75% of screen width): Blockly workspace -->
-        <div id="blocklyDiv" class="custom-blockly" style="flex: 3;"></div>
+    <div class="right" id="outputArea">
+      <div class="box">
+        <div class="button-container">
+          <button class="button" onclick="updateRCode()">Generate R code</button>
+          <button class="button" onclick="download()">Download to file</button>
+        </div>
+        <div class="content" id="rCodeDisplay"></div>
+      </div>
+      <div class="box">
+        <div class="button-container">
+          <button class="button">Run R code (currently in R&D for implementation)</button>
+        </div>
+        <div class="content" id="rCodeOutput"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var workspace;
 
-        <!-- Right half (25% of screen width): Display R code -->
-        <div id="rCodeDisplay" style="flex: 1; height: 90%; overflow: auto; padding: 10px; display: none;"></div>
-    </div>     
-
-    <!-- "Generate R" button outside of Blockly workspace -->
-    <button type="button" onclick="updateRCode()" class="action-button" style="left: 9px;">Generate R</button>
-    <!-- "Download" button placed outside of Blockly workspace -->
-    <button type="button" onclick="download()" class="action-button" style="left: 97px;">Download</button>
-
-    <script>
-        var workspace;
-        var rCodeVisible = false;
-
-        // Wait for the Blockly library to load before creating the workspace
-        document.addEventListener("DOMContentLoaded", function () {
-            // Empty block definition
-            // Blockly.defineBlocksWithJsonArray([
-            //     {
-            //         "type": "empty_block",
-            //         "message0": "%1",
-            //         "args0": [
-            //         {
-            //             "type": "field_number",
-            //             "name": "NUM",
-            //             "value": 0
-            //         }
-            //         ],
-            //         "output": "Number",
-            //         "inputsInline": false, // Disallow inline connections
-            //         "previousStatement": null, // No previous connections
-            //         "nextStatement": null, 
-            //         "colour": 90,
-            //         "tooltip": "Add a number",
-            //         "helpUrl": ""
-            //     }
-            // ]);
-
-            // Initialize block definition
-            Blockly.defineBlocksWithJsonArray([
+    // Wait for the Blockly library to load before creating the workspace
+    document.addEventListener("DOMContentLoaded", function () {
+        // Numeric block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "numeric_type",
+                "message0": "%1",
+                "args0": [
                 {
-                    "type": "r_variable",
-                    "message0": "%1 <- %2",
-                    "args0": [
-                    {
-                        "type": "field_input",
-                        "name": "VAR_NAME",
-                        "text": "variable_name"
-                    },
-                    {
-                        "type": "field_input",
-                        "name": "INITIAL_VALUE",
-                        "text": "initial_value"
-                    }
-                    ],
-                    "output": "Variable",
-                    "inputsInline": true,
-                    "previousStatement": null,
-                    // "nextStatement": null,
-                    "colour": 270,
-                    "tooltip": "Initialize a variable in R",
-                    "helpUrl": ""
+                    "type": "field_number",
+                    "name": "NUM_VALUE",
+                    "value": 0,
+                    "check": "Number"
                 }
-            ]);
+                ],
+                "output": "numeric_type",
+                "inputsInline": false, // Disallow inline connections
+                // "previousStatement": null, // No previous connections
+                // "nextStatement": null, 
+                "colour": 90,
+                "tooltip": "Input a number",
+                "helpUrl": ""
+            }
+        ]);
 
-            // Initialize list definition
-            Blockly.defineBlocksWithJsonArray([
+        // String block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "string_type",
+                "message0": `\"%1\"`,
+                "args0": [
                 {
-                    "type": "initialize_list",
-                    "message0": "%1 <- c(%2)",
-                    "args0": [
-                        {
-                            "type": "field_input",
-                            "name": "LIST_NAME",
-                            "text": "list_name" 
-                        },
-                        {
-                            "type": "field_input",
-                            "name": "NUMBERS",
-                            "text": "num1, num2, num3" 
-                        }
-                    ],
-                    "output": "Array",
-                    "inputsInline": true,
-                    "previousStatement": null,
-                    // "nextStatement": null,
-                    "colour": 210,
-                    "tooltip": "Initialize a list in R",
-                    "helpUrl": ""
+                    "type": "field_input",
+                    "name": "STR_VALUE",
+                    "text": "Sample Text",
+                    "check": "String"
                 }
-            ]);
+                ],
+                "output": "string_type",
+                "inputsInline": false, // Disallow inline connections
+                //"previousStatement": null, // No previous connections
+                //"nextStatement": null, 
+                "colour": 90,
+                "tooltip": "Input text",
+                "helpUrl": ""
+            }
+        ]);
 
-            // Mean block definition
-            Blockly.defineBlocksWithJsonArray([
+        // Null block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "null_type",
+                "message0": `NULL`,
+                "output": "null_type",
+                "inputsInline": false, // Disallow inline connections
+                //"previousStatement": null, // No previous connections
+                //"nextStatement": null, 
+                "colour": 90,
+                "tooltip": "Null block that contains an empty value",
+                "helpUrl": ""
+            }
+        ]);
+        
+        // List block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "list_type",
+                "message0": `List of elements:%1`,
+                "args0": [
                 {
-                    "type": "calculate_mean",
-                    "message0": "Mean %1 of %2",
-                    "args0": [
-                        {
-                            "type": "field_input",
-                            "name": "VAR_NAME",
-                            "text": "var_name"
-                        },
-                        {
-                            "type": "input_statement",
-                            "name": "LIST_NAME",
-                            "text": "list",
-                            "check": "Array" 
-                        }
-                    ],
-                    "output": "Number",
-                    // "previousStatement": null,
-                    // "nextStatement": null,
-                    "colour": 180,
-                    "tooltip": "Calculate the mean of a list in R",
-                    "helpUrl": ""
+                    "type": "input_statement",
+                    "name": "LIST_VALUES",
+                    "check": ["list_element_type"],
+                    "nextStatement": "list_element_type",
+                    "previousStatement": "list_element_type",
                 }
-            ]);
+                ],
+                "output": "list_type",
+                "inputsInline": false, // Disallow inline connections
+                //"previousStatement": null, // No previous connections
+                //"nextStatement": null, 
+                "colour": 90,
+                "tooltip": "Place a list of consecutive numeric blocks",
+                "helpUrl": ""
+            }
+        ]);
 
-            // Median block definition
-            Blockly.defineBlocksWithJsonArray([
+        // List ELEMENT block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "list_element_type",
+                "message0": `List Element: %1`,
+                "args0": [
                 {
-                    "type": "calculate_median",
-                    "message0": "Median %1 of %2",
-                    "args0": [
-                        {
-                            "type": "field_input",
-                            "name": "VAR_NAME",
-                            "text": "var_name"
-                        },
-                        {
-                            "type": "input_statement",
-                            "name": "LIST_NAME",
-                            "text": "list",
-                            "check": "Array" 
-                        }
-                    ],
-                    "output": "Number",
-                    // "previousStatement": null,
-                    // "nextStatement": null,
-                    "colour": 180,
-                    "tooltip": "Calculate the median of a list in R",
-                    "helpUrl": ""
+                    "type": "input_value",
+                    "name": "LIST_ELEMENT_VALUE",
+                    "check": ["numeric_type"] // Include "string_type" only if it's useful to do so
                 }
-            ]);
+                ],
+                "inputsInline": false, // Disallow inline connections
+                "previousStatement": null, // No previous connections
+                "nextStatement": null, 
+                "colour": 90,
+                "tooltip": "Place this in a list",
+                "helpUrl": ""
+            }
+        ]);
 
-            // Mode block definition
-            Blockly.defineBlocksWithJsonArray([
+        // Variable Creation block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "variable_creation_type",
+                "message0": "Create/Update variable called\n%1 with value %2",
+                "args0": [
                 {
-                    "type": "calculate_mode",
-                    "message0": "Mode %1 of %2",
-                    "args0": [
-                        {
-                            "type": "field_input",
-                            "name": "VAR_NAME",
-                            "text": "var_name"
-                        },
-                        {
-                            "type": "input_statement",
-                            "name": "LIST_NAME",
-                            "text": "list",
-                            "check": "Array" 
-                        }
-                    ],
-                    "output": "Number",
-                    // "previousStatement": null,
-                    // "nextStatement": null,
-                    "colour": 180,
-                    "tooltip": "Calculate the mode of a list in R"
-                }
-            ]);
-
-            // Range block definition
-            Blockly.defineBlocksWithJsonArray([
+                    "type": "field_input",
+                    "name": "VAR",
+                    "check": "String",
+                    "text": "sample_variable1",
+                },
                 {
-                    "type": "calculate_range",
-                    "message0": "Range %1 of %2",
-                    "args0": [
-                        {
-                            "type": "field_input",
-                            "name": "VAR_NAME",
-                            "text": "var_name"
-                        },
-                        {
-                            "type": "input_statement",
-                            "name": "LIST_NAME",
-                            "text": "list",
-                            "check": "Array" 
-                        }
-                    ],
-                    "output": "Number",
-                    // "previousStatement": null,
-                    // "nextStatement": null,
-                    "colour": 180,
-                    "tooltip": "Calculate range of a list in R"
-                }
-            ]);
+                    "type": "input_value",
+                    "name": "VAR_VALUE",
+                    // "check" : ["numeric_type", "string_type", "list_type", "variable_usage_type", "aggregation_type"],
+                    // "connectionCheck" : ["numeric_type", "string_type", "list_type", "variable_usage_type", "aggregation_type"],
+                },
+                ],
+                "inputsInline": true, // Disallow inline connections
+                "previousStatement": null, // No previous connections
+                "nextStatement": null, 
+                "colour": 270,
+                "tooltip": "Variable names must start with a letter and can only contain letters, numbers and underscores",
+                "helpUrl": ""
+            }
+        ]);
 
-            // Create blockly workspace
-            workspace = Blockly.inject('blocklyDiv', {
-                media: 'https://unpkg.com/blockly@5.1.0/media/',
-                toolbox: '<xml id="toolbox" style="display: none"></block><block type="r_variable"></block><block type="initialize_list"></block><block type="calculate_mean"></block><block type="calculate_median"></block><block type="calculate_mode"></block><block type="calculate_range"></block></xml>'
-            });
+        // Variable Usage block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "variable_usage_type",
+                "message0": "Use previously defined\nvariable %1",
+                "args0": [
+                {
+                    "type": "field_input",
+                    "name": "OLD_VAR",
+                    "check": "String",
+                    "text": "prev_defined_variable"
+                }
+                ],
+                "output": "variable_usage_type",
+                "inputsInline": false, // Disallow inline connections
+                //"previousStatement": null, // No previous connections
+                //"nextStatement": null, 
+                "colour": 270,
+                "tooltip": "Use a variable name you have declared before! The code will display an error otherwise",
+                "helpUrl": ""
+            }
+        ]);
+
+        // Print block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "print_type",
+                "message0": "Display (output): %1",
+                "args0": [
+                {
+                    "type": "input_value",
+                    "name": "OUTPUT_VALUE",
+                }
+                ],
+                "inputsInline": true, // Disallow inline connections
+                "previousStatement": null, // No previous connections
+                "nextStatement": null, 
+                "colour": 50,
+                "tooltip": "Print anything that can be printed",
+                "helpUrl": ""
+            }
+        ]);
+
+        // Aggregate block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "aggregate_type",
+                "message0": "Aggregate %1 of list: %2",
+                "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "AGGREGATE_TYPE",
+                    "options": [
+                        [ "Mean", "MEAN" ],
+                        [ "Median", "MEDIAN" ],
+                        [ "Mode", "MODE" ],
+                        [ "Range", "RANGE" ],
+                    ]
+                },
+                {
+                    "type": "input_value",
+                    "name": "AGG_VALUE",
+                    "check": ["list_type", "variable_usage_type"],
+                }
+                ],
+                "output": "aggregate_type",
+                "inputsInline": false, // Disallow inline connections
+                // "previousStatement": null, // No previous connections
+                // "nextStatement": null, 
+                "colour": 180,
+                "tooltip": "Aggregate a list or a variable of a list with the dropdown options",
+                "helpUrl": ""
+            }
+        ]);
+
+        // Create blockly workspace
+        workspace = Blockly.inject('blocklyDiv', {
+            media: 'https://blockly-demo.appspot.com/static/media/',
+            toolbox: `<xml id="toolbox" style="display: none"></block>
+                <block type="print_type"></block>
+                <block type="numeric_type"></block>
+                <block type="string_type"></block>
+                <block type="list_type"></block>
+                <block type="null_type"></block>
+                <block type="list_element_type"></block>
+                <block type="variable_creation_type"></block>
+                <block type="variable_usage_type"></block>
+                <block type="aggregate_type"></block>
+            </xml>`,
+            trashcan: true,
+            grid: {spacing: 20,
+                   length: 3,
+                   colour: '#ccc',
+                   snap: true},
+            maxTrashcanContents: 0,
         });
-    </script>
+    });
+</script>
 </body>
 </html>
