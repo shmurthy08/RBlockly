@@ -50,6 +50,9 @@ Blockly.JavaScript['list_type'] = function (block) {
     var list_string = "c("
     var inputBlock = block.getInputTargetBlock('LIST_VALUES');
     list_string += Blockly.JavaScript.blockToCode(inputBlock);
+    if (list_string.length > 2){
+        list_string = list_string.slice(0, -1);
+    }
     list_string += ")";
 
     return list_string
