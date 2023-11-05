@@ -250,16 +250,32 @@
         // Create blockly workspace
         workspace = Blockly.inject('blocklyDiv', {
             media: 'https://blockly-demo.appspot.com/static/media/',
-            toolbox: `<xml id="toolbox" style="display: none"></block>
-                <block type="print_type"></block>
-                <block type="numeric_type"></block>
-                <block type="string_type"></block>
-                <block type="list_type"></block>
-                <block type="null_type"></block>
-                <block type="list_element_type"></block>
-                <block type="variable_creation_type"></block>
-                <block type="variable_usage_type"></block>
-                <block type="aggregate_type"></block>
+            toolbox: `
+            <xml id="toolbox" style="display: none"></block>
+                <category name="Print" colour="black">
+                    <block type="print_type"></block>
+                </category>
+
+                <category name="Numeric" colour="red">
+                    <block type="numeric_type"></block>
+                </category>
+
+                <category name="List" colour="blue">
+                    <block type="list_type"></block>
+                    <block type="list_element_type"></block>
+                </category>
+
+                <category name="Variables" colour="green">
+                    <block type="variable_creation_type"></block>
+                    <block type="variable_usage_type"></block>
+                    <block type="null_type"></block>
+                    <block type="string_type"></block>
+                </category>
+
+                <category name="Operations" colour="yellow">
+                    <block type="aggregate_type"></block>
+                </category>
+
             </xml>`,
             trashcan: true,
             grid: {spacing: 20,
