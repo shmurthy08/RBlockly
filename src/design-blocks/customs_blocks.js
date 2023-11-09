@@ -111,7 +111,11 @@ Blockly.JavaScript['aggregate_type'] = function (block) {
         return "median(" + list_code + ")";
     } else if (agg_type === "MODE"){
         return 'as.numeric(names(table(' + list_code + ')[table(' + list_code + ') == max(table(' + list_code + '))]))';
-    } else {
+    } else if (agg_type === "RANGE"){
         return "max(" + list_code + ") - min(" + list_code + ")";
+    } else if (agg_type === "SUM"){
+        return "sum(" + list_code + ")";
+    } else {
+        return "";
     }
 }
