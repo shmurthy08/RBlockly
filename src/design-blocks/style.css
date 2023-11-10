@@ -30,12 +30,16 @@ body, html {
     border-radius: 10px;
     background-color: #fff;
     flex-grow: 1;
+    height: 49%;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
     box-sizing: border-box;
 }
 
 .button-container {
     display: flex;
     justify-content: space-between;
+    position: static;
 }
 .button {
     background-color: rgb(10,132,255);
