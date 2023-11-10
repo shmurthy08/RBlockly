@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>RBlockly</title>
-    <link rel="shortcut icon" type="image/x-icon" href="https://cdn.discordapp.com/attachments/1031350086191566899/1168350696773525616/RBlockly-Logo.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="https://media.discordapp.net/attachments/1172474933536882698/1172507160530386954/RBlockly-Logo.png?ex=65609163&is=654e1c63&hm=383a1e7c11575eacb645fdb78e99220702c7a70847941efb3d3380adb9eb3065&=&width=148&height=148" />
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <script src="customs_blocks.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -215,7 +215,7 @@
                 "previousStatement": null, // No previous connections
                 "nextStatement": null, 
                 "colour": 50,
-                "tooltip": "Print anything that can be printed",
+                "tooltip": "Display anything that can be worth displaying",
                 "helpUrl": ""
             }
         ]);
@@ -257,22 +257,27 @@
         workspace = Blockly.inject('blocklyDiv', {
             media: 'https://blockly-demo.appspot.com/static/media/',
             toolbox: `<xml id="toolbox" style="display: none"></block>
-                <block type="print_type"></block>
-                <block type="numeric_type"></block>
-                <block type="string_type"></block>
-                <block type="list_type"></block>
-                <block type="null_type"></block>
-                <block type="list_element_type"></block>
-                <block type="variable_creation_type"></block>
-                <block type="variable_usage_type"></block>
-                <block type="aggregate_type"></block>
+                <category name="Data Type" colour="green">
+                    <block type="list_type"></block>
+                    <block type="list_element_type"></block>
+                    <block type="numeric_type"></block>
+                    <block type="string_type"></block>
+                    <block type="null_type"></block>
+                </category>
+                <category name="Variables" colour="purple">
+                    <block type="variable_creation_type"></block>
+                    <block type="variable_usage_type"></block>
+                </category>
+                <category name="Actions" colour="red">
+                    <block type="print_type"></block>
+                    <block type="aggregate_type"></block>
+                </category>
             </xml>`,
             trashcan: true,
             grid: {spacing: 20,
                    length: 3,
                    colour: '#ccc',
                    snap: true},
-            maxTrashcanContents: 0,
         });
     });
 </script>
