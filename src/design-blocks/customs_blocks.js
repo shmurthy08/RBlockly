@@ -161,3 +161,13 @@ Blockly.JavaScript['aggregate_type'] = function (block) {
         return "";
     }
 }
+
+Blockly.JavaScript['random_list_type'] = function (block) {
+    var number_of_vals = +Blockly.JavaScript.blockToCode(block.getInputTargetBlock('NUM_VALUES'));
+    var boundary_1 = +Blockly.JavaScript.blockToCode(block.getInputTargetBlock('BOUNDARY_1'));
+    var boundary_2 = +Blockly.JavaScript.blockToCode(block.getInputTargetBlock('BOUNDARY_2'));
+    var replace = "" + block.getFieldValue('WITH_REPLACEMENT');
+    var min = Math.ceil(Math.min(boundary_1, boundary_2));
+    var max = Math.floor(Math.max(boundary_1, boundary_2));
+    return "sample(" + min + ":" + max + ", " + number_of_vals + ", replace = " + replace + ")"
+};

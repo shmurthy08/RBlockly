@@ -60,7 +60,7 @@
                 "inputsInline": false, // Disallow inline connections
                 // "previousStatement": null, // No previous connections
                 // "nextStatement": null, 
-                "colour": 90,
+                "colour": 360,
                 "tooltip": "Input a number",
                 "helpUrl": ""
             }
@@ -83,7 +83,7 @@
                 "inputsInline": false, // Disallow inline connections
                 //"previousStatement": null, // No previous connections
                 //"nextStatement": null, 
-                "colour": 90,
+                "colour": 360,
                 "tooltip": "Input text",
                 "helpUrl": ""
             }
@@ -98,7 +98,7 @@
                 "inputsInline": false, // Disallow inline connections
                 //"previousStatement": null, // No previous connections
                 //"nextStatement": null, 
-                "colour": 90,
+                "colour": 360,
                 "tooltip": "Null block that contains an empty value",
                 "helpUrl": ""
             }
@@ -145,6 +145,41 @@
                 "nextStatement": null, 
                 "colour": 90,
                 "tooltip": "Place this in a list",
+                "helpUrl": ""
+            }
+        ]);
+
+        // Random List block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "random_list_type",
+                "message0": `List of %1 numbers between %2 and %3 \nInclusive?%4`,
+                "args0": [
+                {
+                    "type": "input_value",
+                    "name": "NUM_VALUES",
+                    "check": ["numeric_type"]
+                },
+                {
+                    "type": "input_value",
+                    "name": "BOUNDARY_1",
+                    "check": ["numeric_type"]
+                },
+                {
+                    "type": "input_value",
+                    "name": "BOUNDARY_2",
+                    "check": ["numeric_type"]
+                },
+                {
+                    "type": "field_checkbox",
+                    "name": "WITH_REPLACEMENT",
+                    "checked": true
+                }
+                ],
+                "output": "list_type",
+                "inputsInline": true,
+                "colour": 90,
+                "tooltip": "'x' number of random values between 'a' and 'b'",
                 "helpUrl": ""
             }
         ]);
@@ -258,6 +293,7 @@
             media: 'https://blockly-demo.appspot.com/static/media/',
             toolbox: `<xml id="toolbox" style="display: none"></block>
                 <category name="Data Type" colour="green">
+                    <block type="random_list_type"></block>
                     <block type="list_type"></block>
                     <block type="list_element_type"></block>
                     <block type="numeric_type"></block>
