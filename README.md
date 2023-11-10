@@ -19,7 +19,7 @@
 
 ### Motivation
 
-The R programming language is a powerful tool for data analysis, statistical modeling, and data visualization. However, it can be intimidating for beginners due to its syntax and steep learning curve. This project, Rblockly, aims to make R more accessible and user-friendly, especially for those who are new to programming.
+The R programming language is a powerful tool for data analysis, statistical modeling, and data visualization. However, it can be intimidating for beginners due to its syntax and relatively steep learning curve. This project, Rblockly, aims to make R more accessible and user-friendly, especially for those who are new to programming.
 
 ### Project Description
 
@@ -54,3 +54,13 @@ Feel free to reach out to any of our team members if you have questions, suggest
 **Compilation**: Although Rblockly primarily focuses on interpretation, it can also involve elements of compilation in the case of the blocks. Our Rblocklys will be considered a high-level language and javascript will be the low-level language which will compile the Rblocklys and display their proper outputs. 
 
 In summary, Rblockly engages with parsing to convert R syntax into visual representations, interpretation to execute R code based on user interactions, and compilation for the Rblocklys including their visual output. These concepts are fundamental to the successful development and operation of Rblockly.
+
+### Example Usage
+
+We know that the modularity of this project can be possibly a little overwhelming, but here is a relatively comprehensive example of what you can do with RBlockly:
+
+![https://media.discordapp.net/attachments/1172474933536882698/1172474962137841685/ExampleBlocks.png?ex=65607366&is=654dfe66&hm=496a98b69e0525b8d4c5d1b2737a8d416973deb3c4f45381a327b7a30526a478&=&width=1164&height=1228](https://media.discordapp.net/attachments/1172474933536882698/1172474962137841685/ExampleBlocks.png?ex=65607366&is=654dfe66&hm=496a98b69e0525b8d4c5d1b2737a8d416973deb3c4f45381a327b7a30526a478&=&width=1164&height=1228)
+
+And here is example output from all these blocks:
+
+![https://media.discordapp.net/attachments/1172474933536882698/1172474980940926996/ExampleOutput.png?ex=6560736a&is=654dfe6a&hm=dd641e181b0d55cfe6268e7cbe06f9fc4419a5b1abc54d2beefa5ba24f5491ca&=&width=1916&height=596](https://media.discordapp.net/attachments/1172474933536882698/1172474980940926996/ExampleOutput.png?ex=6560736a&is=654dfe6a&hm=dd641e181b0d55cfe6268e7cbe06f9fc4419a5b1abc54d2beefa5ba24f5491ca&=&width=1916&height=596)

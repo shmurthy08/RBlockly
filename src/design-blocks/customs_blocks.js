@@ -6,6 +6,7 @@ function updateRCode() {
     var code = blocks.map(function(block) {
         return Blockly.JavaScript.blockToCode(block);
     }).join('\n');
+    code += '\n'; // So the horizontal scroll wheel doesn't hinder the last line
 
     document.getElementById('rCodeDisplay').innerHTML = '<pre style="font-family: \'Courier New\', monospace; height: auto; overflow: auto;"><code>' + code + '</code></pre>';
     // document.getElementById('rCodeDisplay').innerHTML = '<p="font-family: "Courier New", monospace; background-color: #000000;">' + code + '</p>';
@@ -13,12 +14,17 @@ function updateRCode() {
     rCodeDisplay.style.display = 'block';
 }
 
+// Function to download the R code to file
 function download() {
     // Get the generated R code.
     var rCode = Blockly.JavaScript.workspaceToCode(workspace);
 
     // Remove semicolons from the end of each line (if any).
     rCode = rCode.replace(/;\s*$/gm, ''); // Remove semicolon at the end of each line
+
+    if (rCode === ""){ // In case there are no created blocks
+        return;
+    }
 
     // Create a Blob containing the R code as text.
     var blob = new Blob([rCode], { type: 'text/plain' });
@@ -36,6 +42,42 @@ function download() {
 
     // Release the allocated resources.
     URL.revokeObjectURL(url);
+}
+
+// Sleep function (used for copy button)
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Function to copy the code instead of highlighting and copying all
+async function copyCode() {
+    updateRCode();
+
+    // Get the generated R code.
+    var rCode = Blockly.JavaScript.workspaceToCode(workspace);
+
+    // Remove semicolons from the end of each line (if any).
+    rCode = rCode.replace(/;\s*$/gm, ''); // Remove semicolon at the end of each line
+
+    if (rCode === ""){ // In case there are no created blocks
+        return;
+    }
+
+    // Get the text field
+    var blob = new Blob([rCode], { type: 'text/plain' });
+  
+    // Create a new ClipboardItem object from the text field's value
+    var clipboardItem = new ClipboardItem({ "text/plain": blob });
+  
+    // Write the ClipboardItem object to the clipboard
+    navigator.clipboard.write([clipboardItem]);
+
+    // Button animation confirmation:
+
+    var original_message = document.getElementById("clipboardButton").innerHTML;
+    document.getElementById("clipboardButton").innerHTML = "Code Copied! ✅";
+    await sleep(3000);
+    document.getElementById("clipboardButton").innerHTML = original_message;
 }
 
 Blockly.JavaScript['numeric_type'] = function (block) {
@@ -119,3 +161,13 @@ Blockly.JavaScript['aggregate_type'] = function (block) {
         return "";
     }
 }
+
+Blockly.JavaScript['random_list_type'] = function (block) {
+    var number_of_vals = +Blockly.JavaScript.blockToCode(block.getInputTargetBlock('NUM_VALUES'));
+    var boundary_1 = +Blockly.JavaScript.blockToCode(block.getInputTargetBlock('BOUNDARY_1'));
+    var boundary_2 = +Blockly.JavaScript.blockToCode(block.getInputTargetBlock('BOUNDARY_2'));
+    var replace = "" + block.getFieldValue('WITH_REPLACEMENT');
+    var min = Math.ceil(Math.min(boundary_1, boundary_2));
+    var max = Math.floor(Math.max(boundary_1, boundary_2));
+    return "sample(" + min + ":" + max + ", " + number_of_vals + ", replace = " + replace + ")"
+};
