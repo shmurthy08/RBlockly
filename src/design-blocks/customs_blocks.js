@@ -1,11 +1,17 @@
-// Function to update the R code display
-function updateRCode() {
-    var rCodeDisplay = document.getElementById('rCodeDisplay');
-
+// Function to return the R code text
+function getRCodeText(){
     var blocks = workspace.getTopBlocks(true);
     var code = blocks.map(function(block) {
         return Blockly.JavaScript.blockToCode(block);
     }).join('\n');
+    return code;
+}
+
+// Function to update the R code display
+function updateRCode() {
+    var rCodeDisplay = document.getElementById('rCodeDisplay');
+
+    var code = getRCodeText();
     code += '\n'; // So the horizontal scroll wheel doesn't hinder the last line
 
     document.getElementById('rCodeDisplay').innerHTML = '<pre style="font-family: \'Courier New\', monospace; height: auto; overflow: auto;"><code>' + code + '</code></pre>';
@@ -16,8 +22,10 @@ function updateRCode() {
 
 // Function to download the R code to file
 function download() {
+    updateRCode();
+
     // Get the generated R code.
-    var rCode = Blockly.JavaScript.workspaceToCode(workspace);
+    var rCode = getRCodeText();
 
     // Remove semicolons from the end of each line (if any).
     rCode = rCode.replace(/;\s*$/gm, ''); // Remove semicolon at the end of each line
@@ -54,7 +62,7 @@ async function copyCode() {
     updateRCode();
 
     // Get the generated R code.
-    var rCode = Blockly.JavaScript.workspaceToCode(workspace);
+    var rCode = getRCodeText();
 
     // Remove semicolons from the end of each line (if any).
     rCode = rCode.replace(/;\s*$/gm, ''); // Remove semicolon at the end of each line

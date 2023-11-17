@@ -8,37 +8,40 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="left">
-        <div style="margin-right: 10px; margin-top: 3px">
-            <a href="https://github.com/shmurthy08/RBlockly" target="_blank"><button class="button"><img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='14'>&nbsp;&nbsp; View Source Code on GitHub</button></a>
+    <div class="container">
+        <div class="left">
+            <div style="margin-right: 10px; margin-top: 3px">
+                <a href="https://github.com/shmurthy08/RBlockly" target="_blank"><button class="button"><img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='14'>&nbsp;&nbsp; View Source Code on GitHub</button></a>
+            </div>
+            <div style="display: flex; height: 93vh;">
+                <div id="blocklyDiv" class="custom-blockly" style="flex: 3;"></div>
+            </div>
         </div>
-        <div style="display: flex; height: 93vh;">
-            <div id="blocklyDiv" class="custom-blockly" style="flex: 3;"></div>
+        <div class="right" id="outputArea">
+            <div class="box">
+                <div class="button-container">
+                    <button class="button" onclick="updateRCode()">Generate R code</button>
+                    <button class="button" onclick="download()">Download to file</button>
+                </div>
+                <div class="button-container">
+                    <button class="button" onclick="copyCode()" id="clipboardButton">
+                        Copy Code to Clipboard <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">   <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>   <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/> </svg>
+                    </button>
+                </div>
+                <div class="content" id="rCodeDisplay"></div>
+            </div>
+            <div class="box">
+                <div class="button-container">
+                <button class="button" id="runButton">Run R code</button>
+                </div>
+                <div class="content" id="rCodeOutput">
+                    <pre><code id="out"></code></pre>
+                    <canvas id="canvas" width="1008" height="1008" style="display: block; margin: auto; width: 100%;"></canvas>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="right" id="outputArea">
-      <div class="box">
-        <div class="button-container">
-          <button class="button" onclick="updateRCode()">Generate R code</button>
-          <button class="button" onclick="download()">Download to file</button>
-        </div>
-        <div class="button-container">
-          <button class="button" onclick="copyCode()" id="clipboardButton">
-            Copy Code to Clipboard <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">   <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>   <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/> </svg>
-          </button>
-        </div>
-        <div class="content" id="rCodeDisplay"></div>
-      </div>
-      <div class="box">
-        <div class="button-container">
-          <button class="button">Run R code (currently in R&D for implementation)</button>
-        </div>
-        <div class="content" id="rCodeOutput"></div>
-      </div>
-    </div>
-  </div>
-  <script>
+    <script>
     var workspace;
 
     // Wait for the Blockly library to load before creating the workspace
@@ -306,7 +309,7 @@
                 "nextStatement": null, 
                 "inputsInline": true, // Disallow inline connections
                 "colour": 50,
-                "tooltip": "Aggregate a list or a variable of a list with the dropdown options",
+                "tooltip": "Plot a list from the given types.\n\nNote: You can only plot once in the whole program.",
                 "helpUrl": ""
             }
         ]);
@@ -340,6 +343,56 @@
                    snap: true},
         });
     });
-</script>
+    </script>
+    <script type="module">
+        import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs';
+        const webR = new WebR();
+        await webR.init();
+        await webR.evalRVoid('options(device=webr::canvas)');
+        const shelter = await new webR.Shelter();
+
+        // Handle webR output messages in an async loop
+        (async () => {
+        for (; ;) {
+            const output = await webR.read();
+            switch (output.type) {
+            case 'canvas':
+                let canvas = document.getElementById('canvas');
+                if (output.data.event === 'canvasNewPage') {
+                canvas.style.display = 'block';
+                canvas.getContext('2d').clearRect(0, 0, 1008, 1008);
+                }
+                if (output.data.event === 'canvasImage') {
+                canvas.getContext('2d').drawImage(output.data.image, 0, 0);
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        })();
+
+        async function runR() {
+        document.getElementById('canvas').style.display = 'none';
+        updateRCode();
+        let code = getRCodeText();
+        const result = await shelter.captureR(code, {
+            withAutoprint: true,
+            captureStreams: true,
+            captureConditions: false
+        });
+        try {
+            const out = result.output.filter(
+            evt => evt.type == 'stdout' || evt.type == 'stderr'
+            ).map((evt) => evt.data);
+            document.getElementById('out').innerText = out.join('\n');
+        } finally {
+            shelter.purge();
+        }
+        }
+        document.getElementById('runButton').onclick = runR;
+        //document.getElementById('runButton').innerText = 'Run code';
+        document.getElementById('runButton').disabled = false;
+    </script>
 </body>
 </html>
