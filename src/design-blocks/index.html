@@ -58,8 +58,6 @@
                 ],
                 "output": "numeric_type",
                 "inputsInline": false, // Disallow inline connections
-                // "previousStatement": null, // No previous connections
-                // "nextStatement": null, 
                 "colour": 360,
                 "tooltip": "Input a number",
                 "helpUrl": ""
@@ -81,8 +79,6 @@
                 ],
                 "output": "string_type",
                 "inputsInline": false, // Disallow inline connections
-                //"previousStatement": null, // No previous connections
-                //"nextStatement": null, 
                 "colour": 360,
                 "tooltip": "Input text",
                 "helpUrl": ""
@@ -96,8 +92,6 @@
                 "message0": `NULL`,
                 "output": "null_type",
                 "inputsInline": false, // Disallow inline connections
-                //"previousStatement": null, // No previous connections
-                //"nextStatement": null, 
                 "colour": 360,
                 "tooltip": "Null block that contains an empty value",
                 "helpUrl": ""
@@ -120,8 +114,6 @@
                 ],
                 "output": "list_type",
                 "inputsInline": false, // Disallow inline connections
-                //"previousStatement": null, // No previous connections
-                //"nextStatement": null, 
                 "colour": 90,
                 "tooltip": "Place a list of consecutive numeric blocks",
                 "helpUrl": ""
@@ -137,7 +129,10 @@
                 {
                     "type": "input_value",
                     "name": "LIST_ELEMENT_VALUE",
-                    "check": ["numeric_type"] // Include "string_type" only if it's useful to do so
+
+                    // Include "string_type" only if it's useful to do so
+                    // Also, multiple list elements of lists will just concatenate the lists
+                    "check": ["numeric_type", "list_type"]
                 }
                 ],
                 "inputsInline": false, // Disallow inline connections
@@ -153,22 +148,24 @@
         Blockly.defineBlocksWithJsonArray([
             {
                 "type": "random_list_type",
-                "message0": `List of %1 numbers between %2 and %3 \nInclusive?%4`,
+                "message0": `List of %1 numbers between %2 and %3 \nSample with Replacement?%4`,
                 "args0": [
                 {
-                    "type": "input_value",
+                    "type": "field_number",
                     "name": "NUM_VALUES",
-                    "check": ["numeric_type"]
+                    "value": 10,
+                    "check": "Number"
                 },
                 {
-                    "type": "input_value",
+                    "type": "field_number",
                     "name": "BOUNDARY_1",
-                    "check": ["numeric_type"]
+                    "check": "Number"
                 },
                 {
-                    "type": "input_value",
+                    "type": "field_number",
                     "name": "BOUNDARY_2",
-                    "check": ["numeric_type"]
+                    "value": 99,
+                    "check": "Number"
                 },
                 {
                     "type": "field_checkbox",
@@ -198,9 +195,7 @@
                 },
                 {
                     "type": "input_value",
-                    "name": "VAR_VALUE",
-                    // "check" : ["numeric_type", "string_type", "list_type", "variable_usage_type", "aggregation_type"],
-                    // "connectionCheck" : ["numeric_type", "string_type", "list_type", "variable_usage_type", "aggregation_type"],
+                    "name": "VAR_VALUE"
                 },
                 ],
                 "inputsInline": true, // Disallow inline connections
@@ -227,8 +222,6 @@
                 ],
                 "output": "variable_usage_type",
                 "inputsInline": false, // Disallow inline connections
-                //"previousStatement": null, // No previous connections
-                //"nextStatement": null, 
                 "colour": 270,
                 "tooltip": "Use a variable name you have declared before! The code will display an error otherwise",
                 "helpUrl": ""
@@ -280,8 +273,6 @@
                 ],
                 "output": "aggregate_type",
                 "inputsInline": false, // Disallow inline connections
-                // "previousStatement": null, // No previous connections
-                // "nextStatement": null, 
                 "colour": 180,
                 "tooltip": "Aggregate a list or a variable of a list with the dropdown options",
                 "helpUrl": ""
