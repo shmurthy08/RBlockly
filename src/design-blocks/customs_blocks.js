@@ -189,3 +189,30 @@ Blockly.JavaScript['random_list_type'] = function (block) {
     var max = Math.floor(Math.max(boundary_1, boundary_2));
     return "sample(" + min + ":" + max + ", " + number_of_vals + ", replace = " + replace + ")"
 };
+
+// Plots an inputted list of numbers
+Blockly.JavaScript['plot_type'] = function (block) {
+    var plot_type = block.getFieldValue('PLOT_TYPE');
+    var inputBlock = block.getInputTargetBlock('PLOT_LIST');
+    if (inputBlock == null){
+        return "";
+    }
+    var list_code = Blockly.JavaScript.blockToCode(inputBlock);
+    
+    if (plot_type === "HIST"){
+        return `hist(` + list_code + `, main = "Histogram", xlab = "Values", ylab = "Frequency")\n`;
+    } else if (plot_type === "FREQ_POLY"){
+        var str = `temporary_freq_poly_list <- ` + list_code + `\n`;
+        str += `hist(temporary_freq_poly_list, freq = FALSE, main = "Frequency Polygon", xlab = "Values", ylab = "Density")\n`;
+        str += `lines(density(temporary_freq_poly_list))\n`;
+        return str;
+    } else if (plot_type === "DENSITY"){
+        return `plot(density(` + list_code + `), main = "Density Plot")\n`;
+    } else if (plot_type === "BOX_PLOT"){
+        return `boxplot(` + list_code + `, main = "Box Plot")\n`;
+    } else if (plot_type === "ECDF"){
+        return `plot(ecdf(` + list_code + `), main = "ECDF Plot", verticals = TRUE)\n`;
+    } else {
+        return "";
+    }
+}

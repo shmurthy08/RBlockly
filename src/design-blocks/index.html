@@ -93,7 +93,7 @@
                 "output": "null_type",
                 "inputsInline": false, // Disallow inline connections
                 "colour": 360,
-                "tooltip": "Null block that contains an empty value",
+                "tooltip": "Null block that 'contains an empty value'",
                 "helpUrl": ""
             }
         ]);
@@ -148,7 +148,7 @@
         Blockly.defineBlocksWithJsonArray([
             {
                 "type": "random_list_type",
-                "message0": `List of %1 numbers between %2 and %3 \nSample with Replacement?%4`,
+                "message0": `New Random List of %1 numbers\nBetween %2 and %3, inclusive\nSample with Replacement?%4`,
                 "args0": [
                 {
                     "type": "field_number",
@@ -211,7 +211,7 @@
         Blockly.defineBlocksWithJsonArray([
             {
                 "type": "variable_usage_type",
-                "message0": "Use previously defined\nvariable %1",
+                "message0": "Use the previously defined variable\n called %1",
                 "args0": [
                 {
                     "type": "field_input",
@@ -279,6 +279,38 @@
             }
         ]);
 
+        // 1-D list plotting block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "plot_type",
+                "message0": "Plot a %1 using the list: %2",
+                "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "PLOT_TYPE",
+                    "options": [
+                        [ "Histogram", "HIST" ],
+                        [ "Density Plot", "DENSITY" ],
+                        [ "Box Plot", "BOX_PLOT" ],
+                        [ "ECDF Plot", "ECDF" ],
+                        [ "Frequency Polygon", "FREQ_POLY" ],
+                    ]
+                },
+                {
+                    "type": "input_value",
+                    "name": "PLOT_LIST",
+                    "check": ["list_type", "variable_usage_type"],
+                }
+                ],
+                "previousStatement": null, // No previous connections
+                "nextStatement": null, 
+                "inputsInline": true, // Disallow inline connections
+                "colour": 50,
+                "tooltip": "Aggregate a list or a variable of a list with the dropdown options",
+                "helpUrl": ""
+            }
+        ]);
+
         // Create blockly workspace
         workspace = Blockly.inject('blocklyDiv', {
             media: 'https://blockly-demo.appspot.com/static/media/',
@@ -297,6 +329,7 @@
                 </category>
                 <category name="Actions" colour="red">
                     <block type="print_type"></block>
+                    <block type="plot_type"></block>
                     <block type="aggregate_type"></block>
                 </category>
             </xml>`,
