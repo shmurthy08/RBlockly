@@ -182,6 +182,10 @@ Blockly.JavaScript['aggregate_type'] = function (block) {
         return "max(" + list_code + ") - min(" + list_code + ")";
     } else if (agg_type === "SUM"){
         return "sum(" + list_code + ")";
+    } else if (agg_type === "MIN"){
+        return "min(" + list_code + ")";
+    } else if (agg_type === "MAX"){
+        return "max(" + list_code + ")";
     } else {
         return "";
     }
