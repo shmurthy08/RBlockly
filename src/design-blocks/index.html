@@ -8,37 +8,40 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="left">
-        <div style="margin-right: 10px; margin-top: 3px">
-            <a href="https://github.com/shmurthy08/RBlockly" target="_blank"><button class="button"><img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='14'>&nbsp;&nbsp; View Source Code on GitHub</button></a>
+    <div class="container">
+        <div class="left">
+            <div style="margin-right: 10px; margin-top: 3px">
+                <a href="https://github.com/shmurthy08/RBlockly" target="_blank"><button class="button"><img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='14'>&nbsp;&nbsp; View Source Code on GitHub</button></a>
+            </div>
+            <div style="display: flex; height: 93vh;">
+                <div id="blocklyDiv" class="custom-blockly" style="flex: 3;"></div>
+            </div>
         </div>
-        <div style="display: flex; height: 93vh;">
-            <div id="blocklyDiv" class="custom-blockly" style="flex: 3;"></div>
+        <div class="right" id="outputArea">
+            <div class="box">
+                <div class="button-container">
+                    <button class="button" onclick="updateRCode()">Generate R code</button>
+                    <button class="button" onclick="download()">Download to file</button>
+                </div>
+                <div class="button-container">
+                    <button class="button" onclick="copyCode()" id="clipboardButton">
+                        Copy Code to Clipboard <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">   <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>   <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/> </svg>
+                    </button>
+                </div>
+                <div class="content" id="rCodeDisplay"></div>
+            </div>
+            <div class="box">
+                <div class="button-container">
+                <button class="button" id="runButton">Run R code</button>
+                </div>
+                <div class="content" id="rCodeOutput">
+                    <pre><code id="out"></code></pre>
+                    <canvas id="canvas" width="1008" height="1008" style="display: block; margin: auto; width: 100%;"></canvas>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="right" id="outputArea">
-      <div class="box">
-        <div class="button-container">
-          <button class="button" onclick="updateRCode()">Generate R code</button>
-          <button class="button" onclick="download()">Download to file</button>
-        </div>
-        <div class="button-container">
-          <button class="button" onclick="copyCode()" id="clipboardButton">
-            Copy Code to Clipboard <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">   <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>   <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/> </svg>
-          </button>
-        </div>
-        <div class="content" id="rCodeDisplay"></div>
-      </div>
-      <div class="box">
-        <div class="button-container">
-          <button class="button">Run R code (currently in R&D for implementation)</button>
-        </div>
-        <div class="content" id="rCodeOutput"></div>
-      </div>
-    </div>
-  </div>
-  <script>
+    <script>
     var workspace;
 
     // Wait for the Blockly library to load before creating the workspace
@@ -58,8 +61,6 @@
                 ],
                 "output": "numeric_type",
                 "inputsInline": false, // Disallow inline connections
-                // "previousStatement": null, // No previous connections
-                // "nextStatement": null, 
                 "colour": 360,
                 "tooltip": "Input a number",
                 "helpUrl": ""
@@ -81,8 +82,6 @@
                 ],
                 "output": "string_type",
                 "inputsInline": false, // Disallow inline connections
-                //"previousStatement": null, // No previous connections
-                //"nextStatement": null, 
                 "colour": 360,
                 "tooltip": "Input text",
                 "helpUrl": ""
@@ -96,10 +95,8 @@
                 "message0": `NULL`,
                 "output": "null_type",
                 "inputsInline": false, // Disallow inline connections
-                //"previousStatement": null, // No previous connections
-                //"nextStatement": null, 
                 "colour": 360,
-                "tooltip": "Null block that contains an empty value",
+                "tooltip": "Null block that 'contains an empty value'",
                 "helpUrl": ""
             }
         ]);
@@ -120,8 +117,6 @@
                 ],
                 "output": "list_type",
                 "inputsInline": false, // Disallow inline connections
-                //"previousStatement": null, // No previous connections
-                //"nextStatement": null, 
                 "colour": 90,
                 "tooltip": "Place a list of consecutive numeric blocks",
                 "helpUrl": ""
@@ -137,7 +132,10 @@
                 {
                     "type": "input_value",
                     "name": "LIST_ELEMENT_VALUE",
-                    "check": ["numeric_type"] // Include "string_type" only if it's useful to do so
+
+                    // Include "string_type" only if it's useful to do so
+                    // Also, multiple list elements of lists will just concatenate the lists
+                    "check": ["numeric_type", "list_type"]
                 }
                 ],
                 "inputsInline": false, // Disallow inline connections
@@ -153,22 +151,24 @@
         Blockly.defineBlocksWithJsonArray([
             {
                 "type": "random_list_type",
-                "message0": `List of %1 numbers between %2 and %3 \nInclusive?%4`,
+                "message0": `New Random List of %1 numbers\nBetween %2 and %3, inclusive\nSample with Replacement?%4`,
                 "args0": [
                 {
-                    "type": "input_value",
+                    "type": "field_number",
                     "name": "NUM_VALUES",
-                    "check": ["numeric_type"]
+                    "value": 10,
+                    "check": "Number"
                 },
                 {
-                    "type": "input_value",
+                    "type": "field_number",
                     "name": "BOUNDARY_1",
-                    "check": ["numeric_type"]
+                    "check": "Number"
                 },
                 {
-                    "type": "input_value",
+                    "type": "field_number",
                     "name": "BOUNDARY_2",
-                    "check": ["numeric_type"]
+                    "value": 99,
+                    "check": "Number"
                 },
                 {
                     "type": "field_checkbox",
@@ -198,9 +198,7 @@
                 },
                 {
                     "type": "input_value",
-                    "name": "VAR_VALUE",
-                    // "check" : ["numeric_type", "string_type", "list_type", "variable_usage_type", "aggregation_type"],
-                    // "connectionCheck" : ["numeric_type", "string_type", "list_type", "variable_usage_type", "aggregation_type"],
+                    "name": "VAR_VALUE"
                 },
                 ],
                 "inputsInline": true, // Disallow inline connections
@@ -216,7 +214,7 @@
         Blockly.defineBlocksWithJsonArray([
             {
                 "type": "variable_usage_type",
-                "message0": "Use previously defined\nvariable %1",
+                "message0": "Use the previously defined variable\n called %1",
                 "args0": [
                 {
                     "type": "field_input",
@@ -227,8 +225,6 @@
                 ],
                 "output": "variable_usage_type",
                 "inputsInline": false, // Disallow inline connections
-                //"previousStatement": null, // No previous connections
-                //"nextStatement": null, 
                 "colour": 270,
                 "tooltip": "Use a variable name you have declared before! The code will display an error otherwise",
                 "helpUrl": ""
@@ -269,7 +265,9 @@
                         [ "Median", "MEDIAN" ],
                         [ "Mode", "MODE" ],
                         [ "Range", "RANGE" ],
-                        [ "Sum", "SUM" ]
+                        [ "Sum", "SUM" ],
+                        [ "Min", "MIN" ],
+                        [ "Max", "MAX" ],
                     ]
                 },
                 {
@@ -280,10 +278,40 @@
                 ],
                 "output": "aggregate_type",
                 "inputsInline": false, // Disallow inline connections
-                // "previousStatement": null, // No previous connections
-                // "nextStatement": null, 
                 "colour": 180,
                 "tooltip": "Aggregate a list or a variable of a list with the dropdown options",
+                "helpUrl": ""
+            }
+        ]);
+
+        // 1-D list plotting block definition
+        Blockly.defineBlocksWithJsonArray([
+            {
+                "type": "plot_type",
+                "message0": "Plot a %1 using the list: %2",
+                "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "PLOT_TYPE",
+                    "options": [
+                        [ "Histogram", "HIST" ],
+                        [ "Density Plot", "DENSITY" ],
+                        [ "Box Plot", "BOX_PLOT" ],
+                        [ "ECDF Plot", "ECDF" ],
+                        [ "Frequency Polygon", "FREQ_POLY" ],
+                    ]
+                },
+                {
+                    "type": "input_value",
+                    "name": "PLOT_LIST",
+                    "check": ["list_type", "variable_usage_type"],
+                }
+                ],
+                "previousStatement": null, // No previous connections
+                "nextStatement": null, 
+                "inputsInline": true, // Disallow inline connections
+                "colour": 50,
+                "tooltip": "Plot a list from the given types.\n\nNote: You can only plot once in the whole program.",
                 "helpUrl": ""
             }
         ]);
@@ -306,6 +334,7 @@
                 </category>
                 <category name="Actions" colour="red">
                     <block type="print_type"></block>
+                    <block type="plot_type"></block>
                     <block type="aggregate_type"></block>
                 </category>
             </xml>`,
@@ -316,6 +345,56 @@
                    snap: true},
         });
     });
-</script>
+    </script>
+    <script type="module">
+        import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs';
+        const webR = new WebR();
+        await webR.init();
+        await webR.evalRVoid('options(device=webr::canvas)');
+        const shelter = await new webR.Shelter();
+
+        // Handle webR output messages in an async loop
+        (async () => {
+        for (; ;) {
+            const output = await webR.read();
+            switch (output.type) {
+            case 'canvas':
+                let canvas = document.getElementById('canvas');
+                if (output.data.event === 'canvasNewPage') {
+                canvas.style.display = 'block';
+                canvas.getContext('2d').clearRect(0, 0, 1008, 1008);
+                }
+                if (output.data.event === 'canvasImage') {
+                canvas.getContext('2d').drawImage(output.data.image, 0, 0);
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        })();
+
+        async function runR() {
+        document.getElementById('canvas').style.display = 'none';
+        updateRCode();
+        let code = getRCodeText();
+        const result = await shelter.captureR(code, {
+            withAutoprint: true,
+            captureStreams: true,
+            captureConditions: false
+        });
+        try {
+            const out = result.output.filter(
+            evt => evt.type == 'stdout' || evt.type == 'stderr'
+            ).map((evt) => evt.data);
+            document.getElementById('out').innerText = out.join('\n');
+        } finally {
+            shelter.purge();
+        }
+        }
+        document.getElementById('runButton').onclick = runR;
+        //document.getElementById('runButton').innerText = 'Run code';
+        document.getElementById('runButton').disabled = false;
+    </script>
 </body>
 </html>
