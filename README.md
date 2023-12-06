@@ -11,6 +11,11 @@
 
 ### [Link to Project's Github Pages](https://shmurthy08.github.io/RBlockly/src/design-blocks/index.html)
 
+### Relevant Videos about the project
+
+| [About the Project](https://drive.google.com/file/d/10BJ3UKza__44V3t8VrAOoYYX1c-ZPT41/view?usp=drive_link) | [Technical Introduction](https://drive.google.com/file/d/1Lu86lGV4dcqRz8_Ed_hcUHvyoxZrC8Ya/view?usp=sharing) |
+|-|-|
+
 ### External Dependency Instructions:
 
 - If you choose to download the generated R file and run it locally:
@@ -52,12 +57,12 @@ Feel free to reach out to any of our team members if you have questions, suggest
 
 **Interpretation**: RBlockly involves the interpretation of user actions and configurations to execute specific R functions. Each block in our DSL corresponds to a specific R operation or set of operations. The interpretation process involves taking R code and converting it into an equivalent visual representation in block format. For example, when a user creates a variable using a block, the system interprets the block with its equivalent R code that initializes the variable.
 
-**Compilation**: Although RBlockly primarily focuses on interpretation, it can also involve elements of compilation in the case of the blocks. Our RBlocklys will be considered a high-level language and javascript will be the low-level language which will compile the RBlocklys and display their proper outputs. 
+**Compilation**: Although RBlockly primarily focuses on interpretation, it can also involve elements of compilation in the case of the blocks. Our RBlockly will be considered a high-level language and javascript will be the low-level language which will compile the RBlockly and display their proper outputs. 
 
-In summary, RBlockly engages with parsing to convert R syntax into visual representations, interpretation to execute R code based on user interactions, and compilation for the RBlocklys including their visual output. These concepts are fundamental to the successful development and operation of RBlockly.
+In summary, RBlockly engages with parsing to convert R syntax into visual representations, interpretation to execute R code based on user interactions, and compilation for the RBlockly including their visual output. These concepts are fundamental to the successful development and operation of RBlockly.
 
 ### Example Usage
 
 We know that the modularity of this project can be possibly a little overwhelming, but here is a relatively comprehensive example of what you can do with RBlockly:
 
-![https://cdn.discordapp.com/attachments/1172474933536882698/1174992390025662474/ExampleUsage.png?ex=65699bf0&is=655726f0&hm=1941f6e817fedfd0fb20349fcf27becaf9f7b93fd656758e16a88f37fc7aaa7c&](https://cdn.discordapp.com/attachments/1172474933536882698/1174992390025662474/ExampleUsage.png?ex=65699bf0&is=655726f0&hm=1941f6e817fedfd0fb20349fcf27becaf9f7b93fd656758e16a88f37fc7aaa7c&)
+![https://cdn.discordapp.com/attachments/1172474933536882698/1182085341847498815/RBlocklyExample.png?ex=658369c3&is=6570f4c3&hm=4a5efd7763123d3b0287187cf39ee13e0a44fe3d0a2df1ebd0cec606364b5a2e&](https://cdn.discordapp.com/attachments/1172474933536882698/1182085341847498815/RBlocklyExample.png?ex=658369c3&is=6570f4c3&hm=4a5efd7763123d3b0287187cf39ee13e0a44fe3d0a2df1ebd0cec606364b5a2e&)
