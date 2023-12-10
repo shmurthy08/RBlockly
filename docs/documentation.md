@@ -31,7 +31,7 @@ To reproduce the project, follow the steps below:
     - Open file on RStudio and Run the file
 5. Enjoy!
 
-## Reproduce Demo - Using GitHub Pages
+## Reproduce Demo Using GitHub Pages
 
 1. [Open GitHub Pages link](https://shmurthy08.github.io/RBlockly/src/design-blocks/index.html)
 2. Click on `Generate R Code` button as blocks have already been pre-rendered to run the demo
