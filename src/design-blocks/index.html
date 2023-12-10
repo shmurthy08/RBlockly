@@ -5,6 +5,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="https://media.discordapp.net/attachments/1172474933536882698/1172507160530386954/RBlockly-Logo.png?ex=65609163&is=654e1c63&hm=383a1e7c11575eacb645fdb78e99220702c7a70847941efb3d3380adb9eb3065&=&width=148&height=148" />
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <script src="customs_blocks.js"></script>
+    <script src = "defaultBlocks.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
@@ -43,7 +44,12 @@
     </div>
     <script>
     var workspace;
-
+    // Load default blocks when the page intially loads
+    function loadDefaultBlocks() {
+        var defaultBlocks = document.getElementById("defaultBlocks");
+        Blockly.Xml.domToWorkspace(defaultBlocks, workspace);
+    }
+    
     // Wait for the Blockly library to load before creating the workspace
     document.addEventListener("DOMContentLoaded", function () {
         // Numeric block definition
@@ -316,6 +322,7 @@
             }
         ]);
 
+
         // Create blockly workspace
         workspace = Blockly.inject('blocklyDiv', {
             media: 'https://blockly-demo.appspot.com/static/media/',
@@ -344,6 +351,13 @@
                    colour: '#ccc',
                    snap: true},
         });
+
+        
+        //now that the library is loaded, load the default blocks
+        //loadDefaultBlocks();
+        // No changes here, use defaultBlocks directly
+        var defaultBlocksDom = Blockly.utils.xml.textToDom(defaultBlocks);
+        Blockly.Xml.domToWorkspace(defaultBlocksDom, workspace);
     });
     </script>
     <script type="module">
@@ -395,6 +409,7 @@
         document.getElementById('runButton').onclick = runR;
         //document.getElementById('runButton').innerText = 'Run code';
         document.getElementById('runButton').disabled = false;
+
     </script>
 </body>
 </html>
