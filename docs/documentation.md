@@ -8,6 +8,7 @@
 - [Extending the Project](#extending-the-project)
 - [Usage](#usage)
 - [Slide Deck](#slide-deck)
+- [More Documentation]
 - [License](#license)
 
 ## Installation
@@ -57,6 +58,12 @@ Use this project to learn more about R and how blocks can be used to promote und
 Below is the link to the slide deck for this prototype:
 
 - [Slideshow](https://docs.google.com/presentation/d/1qsRSrun0Ai1g-80e8VV2RnfdrNbNf8C9ljKtCBOrZoI/edit#slide=id.g28d13273593_1_30)
+
+
+## More documentation 
+
+can be found [here](https://github.com/shmurthy08/RBlockly/tree/main/docs)
+
 
 
 ## License
