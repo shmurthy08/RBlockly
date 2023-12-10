@@ -11,6 +11,8 @@
 
 ### [Link to Project's Github Pages](https://shmurthy08.github.io/RBlockly/src/design-blocks/index.html)
 
+### [RBlockly - Documentation](https://github.com/shmurthy08/RBlockly/blob/main/docs/documentation.md)
+
 ### Relevant Videos about the project
 
 | [About the Project](https://drive.google.com/file/d/10BJ3UKza__44V3t8VrAOoYYX1c-ZPT41/view?usp=drive_link) | [Technical Introduction](https://drive.google.com/file/d/1Lu86lGV4dcqRz8_Ed_hcUHvyoxZrC8Ya/view?usp=sharing) |
