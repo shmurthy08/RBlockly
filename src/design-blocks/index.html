@@ -1,3 +1,11 @@
+<!-- 
+    This HTML file is the main index file for the RBlockly project.
+    It contains the structure and layout of the RBlockly web application.
+    The file includes necessary scripts and stylesheets for the functionality of the application.
+    The file also defines custom Blockly blocks and their properties.
+    The blocks defined include numeric, string, null, list, list element, random list, variable creation, variable usage, print, and aggregate blocks.
+    The file also includes event handlers for various buttons and functions related to generating and running R code.
+-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,10 +22,31 @@
             <div style="margin-right: 10px; margin-top: 3px">
                 <a href="https://github.com/shmurthy08/RBlockly" target="_blank"><button class="button"><img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='14'>&nbsp;&nbsp; View Source Code on GitHub</button></a>
             </div>
-            <div style="display: flex; height: 93vh;">
+            <div class="button-container">
+                <button class="button" onclick="showPopup()">View Instructions</button>
+                <button class="button" onclick="saveBlocks()">Save Blocks</button>
+                <button class="button" onclick="loadBlocks()">Load Blocks</button>
+                <input type="file" id="loadInput" style="display: none;" onchange="loadBlocksFile(event)">
+            </div>
+            <div style="display: flex; height: 87.5vh;">
                 <div id="blocklyDiv" class="custom-blockly" style="flex: 3;"></div>
             </div>
         </div>
+        <div id="popup" class="popup-container">
+            <div class="popup-content">
+              <span class="close-btn" onclick="hidePopup()">X</span>
+              <br>
+              <p id="popupText" style="margin-left: 30px;">The initial example in RBlockly generates a random list using various distributions of numbers. After generating the list, it prints the values and computes the average. Additionally, it creates a density plot illustrating the distribution.
+                <br><br>
+                "Save Blocks" and "Load Blocks" buttons situated at the top of the interface allow you to save your current blocks configuration as a file and load saved configurations, respectively.
+                <br><br>
+                The "Generate R Code" button, located on the top right corner, compiles the blocks into R code. You can also copy this code to your clipboard or save it as a file for future use.
+                <br><br>
+                The bottom left section of the page contains a "Run R Code" button enabling you to execute the R code within the browser and observe the output in real-time.
+                <br><br>
+                Feel free to modify the existing blocks or add new ones from the toolbox onto the Blockly workspace to customize your R program.</p>
+            </div>
+          </div>
         <div class="right" id="outputArea">
             <div class="box">
                 <div class="button-container">

@@ -88,6 +88,41 @@ async function copyCode() {
     document.getElementById("clipboardButton").innerHTML = original_message;
 }
 
+// Save the blocks into an XML file
+function saveBlocks() {
+    var xml = Blockly.Xml.workspaceToDom(workspace);
+    var xmlText = Blockly.Xml.domToPrettyText(xml);
+    var blob = new Blob([xmlText], {type: 'text/xml'});
+    var a = document.createElement('a');
+    a.download = 'blocks.xml';
+    a.href = URL.createObjectURL(blob);
+    a.click();
+}
+
+// Load the XML file into blocks
+function loadBlocks() {
+    document.getElementById('loadInput').click();
+}
+
+// Handles the file reading for XML file
+function loadBlocksFile(event) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var xml = Blockly.utils.xml.textToDom(e.target.result);
+        Blockly.Xml.appendDomToWorkspace(xml, workspace);
+    };
+    reader.readAsText(file);
+}
+
+function showPopup() {
+    document.getElementById('popup').style.display = 'block';
+}
+
+function hidePopup() {
+    document.getElementById('popup').style.display = 'none';
+}
+
 // Numeric type definition
 Blockly.JavaScript['numeric_type'] = function (block) {
     return ("" + block.getFieldValue('NUM_VALUE'));
@@ -172,6 +207,7 @@ Blockly.JavaScript['aggregate_type'] = function (block) {
     }
     var list_code = Blockly.JavaScript.blockToCode(inputBlock);
     
+    // Different Aggregations generate different code
     if (agg_type === "MEAN"){
         return "mean(" + list_code + ")";
     } else if (agg_type === "MEDIAN"){
@@ -197,6 +233,8 @@ Blockly.JavaScript['random_list_type'] = function (block) {
     var boundary_1 = block.getFieldValue('BOUNDARY_1');
     var boundary_2 = block.getFieldValue('BOUNDARY_2');
     var replace = "" + block.getFieldValue('WITH_REPLACEMENT');
+
+    // Handles if the min and max are swapped (like "numbers between 9 and 2")
     var min = Math.ceil(Math.min(boundary_1, boundary_2));
     var max = Math.floor(Math.max(boundary_1, boundary_2));
     return "sample(" + min + ":" + max + ", " + number_of_vals + ", replace = " + replace + ")"
@@ -211,6 +249,7 @@ Blockly.JavaScript['plot_type'] = function (block) {
     }
     var list_code = Blockly.JavaScript.blockToCode(inputBlock);
     
+    // Handles different plot types based on the chosen plot
     if (plot_type === "HIST"){
         return `hist(` + list_code + `, main = "Histogram", xlab = "Values", ylab = "Frequency")\n`;
     } else if (plot_type === "FREQ_POLY"){
