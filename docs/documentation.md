@@ -8,7 +8,7 @@
 - [Extending the Project](#extending-the-project)
 - [Usage](#usage)
 - [Slide Deck](#slide-deck)
-- [More Documentation](more-documentation)
+- [More Documentation](#more-documentation)
 - [License](#license)
 
 ## Installation
