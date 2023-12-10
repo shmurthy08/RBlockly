@@ -1,4 +1,4 @@
-# README for RBlockly Project
+# RBlockly
 
 ## Group Members
 
